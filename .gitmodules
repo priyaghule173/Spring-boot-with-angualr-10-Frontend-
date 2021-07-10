@@ -1,0 +1,3 @@
+[submodule "angular-frontend"]
+	path = angular-frontend
+	url = https://github.com/priyaghule173/Spring-boot-with-angualr-10-frontend.git
