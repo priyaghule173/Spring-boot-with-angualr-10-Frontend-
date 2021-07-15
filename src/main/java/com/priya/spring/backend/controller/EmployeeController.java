@@ -1,12 +1,15 @@
 package com.priya.spring.backend.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -57,7 +60,7 @@ public class EmployeeController {
 	public ResponseEntity<Employee> updateEmployee(@PathVariable Long id, @RequestBody Employee employeeDetails){
 		Employee employee1 = employeeRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Employee not exist with id:" +id));
-		System.out.print(employee1);
+		//System.out.print(employee1);
 		
 		employee1.setFirstName(employeeDetails.getFirstName());
 		employee1.setLastName(employeeDetails.getLastName());
@@ -66,6 +69,20 @@ public class EmployeeController {
 		Employee updatedEmployee=employeeRepository.save(employee1);
 //		
 	return ResponseEntity.ok(updatedEmployee);
+		
+	}
+	
+	//Delete Employee rest api
+	@CrossOrigin
+	@DeleteMapping("/employees/{id}")
+	public ResponseEntity<Map<String, Boolean>> deleteEmployee(@PathVariable Long id){
+		Employee employeedelete = employeeRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Employee not exist with id:" +id));
+		
+		employeeRepository.delete(employeedelete);
+		Map<String, Boolean> reponse = new HashMap<>();
+		reponse.put("deleted", Boolean.TRUE);
+		return ResponseEntity.ok(reponse);
 		
 	}
 	
